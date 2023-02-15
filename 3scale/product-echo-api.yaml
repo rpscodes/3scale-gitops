@@ -1,7 +1,7 @@
 apiVersion: capabilities.3scale.net/v1beta1
 kind: Product
 metadata:
-  name: echo-api-product-sample-test
+  name: echo-api-product-sample
 spec:
   applicationPlans:
     plan_basic:
@@ -14,7 +14,7 @@ spec:
     plan_unlimited:
       name: Unlimited
   providerAccountRef:
-    name: test-tenant-secret
+    name: prod-tenant-secret
   name: Operated Product Echo API
   systemName: echo_api_product
   description: Echo API Product
