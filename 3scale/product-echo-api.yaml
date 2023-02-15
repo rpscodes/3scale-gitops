@@ -1,7 +1,7 @@
 apiVersion: capabilities.3scale.net/v1beta1
 kind: Product
 metadata:
-  name: echo-api-product-sample
+  name: echo-api-product-sample-test
 spec:
   applicationPlans:
     plan_basic:

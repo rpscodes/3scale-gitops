@@ -1,7 +1,7 @@
 apiVersion: capabilities.3scale.net/v1beta1
 kind: Backend
 metadata:
-  name: echo-api-backend-sample
+  name: echo-api-backend-sample-test
 spec:
   description: Echo API Backend
   name: Operated Backend Echo API
