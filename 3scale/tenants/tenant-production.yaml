@@ -2,14 +2,17 @@ apiVersion: capabilities.3scale.net/v1alpha1
 kind: Tenant
 metadata:
   name: threescale-production-tenant
+  namespace: threescale-production
 spec:
   email: prod@example.openshift.com
   masterCredentialsRef:
     name: system-seed
+    namespace: 3scale
   organizationName: production
   passwordCredentialsRef:
     name: tenant-admin-secret
+    namespace: 3scale
   systemMasterUrl: 'https://master.apps.cluster-f6q45.f6q45.sandbox1573.opentlc.com'
   tenantSecretRef:
-    name: prod-tenant-secret
+    name: tenant-secret
   username: admin

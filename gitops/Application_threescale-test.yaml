@@ -4,7 +4,7 @@ metadata:
   name: threescale-test
 spec:
   destination:
-    namespace: 3scale-dev
+    namespace: threescale-testing
     server: https://kubernetes.default.svc
   project: default
   source:
