@@ -12,7 +12,7 @@ spec:
   passwordCredentialsRef:
     name: tenant-admin-secret
     namespace: 3scale
-  systemMasterUrl: 'https://master.apps.cluster-f6q45.f6q45.sandbox1573.opentlc.com'
+  systemMasterUrl: 'https://master.apps.cluster-4ld2s.4ld2s.sandbox1508.opentlc.com'
   tenantSecretRef:
     name: tenant-secret
   username: admin
