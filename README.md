@@ -26,13 +26,44 @@ OpenShift as oauth provider by clicking the button `LOG IN VIA OPENSHIFT`.
 
 Find the password for the admin in `openshift-gitops-cluster` secret in `openshift-gitops` namespace.
 
-## Create 3scale namespace and secret
-Create a namespace say `3scale-dev` where GitOps will apply CRs and create the secret required for 3scale CRs to authenticate with 3scale
+## Create password secret for tenant creation
 
 ```
-oc new-project 3scale-dev
-oc create secret generic 3scale-admin-dev-secret --from-literal=adminURL=https://3scale-admin.apps.cluster-2q76v.2q76v.sandbox955.opentlc.com --from-literal=token=<3scale admin access token>
+oc project 3scale
 ```
+```
+oc apply -f 3scale/tenants/tenant-password-secret.yaml
+```
+```
+oc apply -f 3scale/tenants/tenant-password-secret.yaml
+```
+
+## Create Tenants in different namespace
+
+### Development Tenant
+
+```
+oc apply -f 3scale/namespaces/development-namespace.yaml
+```
+```
+oc apply -f 3scale/tenants/tenant-development.yaml
+```
+### Testing Tenant
+```
+oc apply -f 3scale/namespaces/testing-namespace.yaml
+```
+```
+oc apply -f 3scale/tenants/tenant-testing.yaml
+```
+
+### Production Tenant
+```
+oc apply -f 3scale/namespaces/production-namespace.yaml
+```
+```
+oc apply -f 3scale/tenants/tenant-production.yaml
+```
+
 
 ## Enabling RBAC
 Create cluster role to create, update, delete 3scale CRs (Need to have OCP admin access for this)
@@ -43,7 +74,13 @@ oc apply -f rbac/ClusterRole_gitops-threescale-access.yaml
 Assign the cluster role to sa `openshift-gitops-argocd-application-controller`
 
 ```
-oc adm policy add-role-to-user gitops-threescale-access system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n 3scale-dev (namespace where 3scale CRs to be applied)
+oc adm policy add-role-to-user gitops-threescale-access system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n threescale-development
+```
+```
+oc adm policy add-role-to-user gitops-threescale-access system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n threescale-testing
+```
+```
+oc adm policy add-role-to-user gitops-threescale-access system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n threescale-production
 ```
 
 ## Connect the git repository
@@ -57,26 +94,27 @@ Click `Manage your repositories, projects, settings` icon on the left panel of t
 
 ## Create ArgoCD Application
  
-Create the ArgoCD Application. Namespace where 3scale CRs are to be created is assumed as `3scale-dev`. Please change the `namespace` attribute under `spec->destination` in the `gitops/Application_threescale-dev.yaml` to align with your environment
+Create the ArgoCD Application for all the three environments/tenants. 
 
 ```
 oc apply -f gitops/Application_threescale-dev.yaml -n openshift-gitops
 ```
-An ArgoCD application `threescale-dev` is created.
+```
+oc apply -f gitops/Application_threescale-test.yaml -n openshift-gitops
+```
+```
+oc apply -f gitops/Application_threescale-prod.yaml -n openshift-gitops
+```
+Three ArgoCD application `threescale-dev` , `threescale-test` and `threescale-prod`are created.
 
 ## 3scale CRs
 **Please note that the directory structure used for 3scale CRs are for the tutorial purpose only. Please adjust based on the needs**
 
-3scale CRs required for this tutorial are spread under multiple directories and uses kustomize plugin 
-to replace and merge the environment specific values
-
-- `base` - 3scale manifest attributes that are common for all environments are housed here (spread under different directories i.e. `products`, `backends` etc.)
-
-- `overlays/dev` - 3scale manifest attributes that are specific for dev environment and different from base are housed here (spread under different directories i.e. `products`, `backends` etc.)
+3scale CRs required for this tutorial are 3scale/backend-echo-api.yaml and 3scale/product-echo-api.yaml
 
 ## Manual Synch of 3scale CRs
 
-GitOps application `threescale-dev` is configured to synch manually. But, it can be changed to synch automatically i.e. changes committed to git repo are automatically applied to 3scale else go to the GitOps console using the route URL it creates as `openshift-gitops-server` in `openshift-gitops` namespace.
+The three GitOps applications configured to synch manually. But, it can be changed to synch automatically i.e. changes committed to git repo are automatically applied to 3scale else go to the GitOps console using the route URL it creates as `openshift-gitops-server` in `openshift-gitops` namespace.
 
 Click `Manage Application` icon on the left panel of the ArgoCD console. You will then see `threescale-dev` application as shown below
 ![](images/gitops-application.png)
