@@ -10,7 +10,7 @@ spec:
   source:
     path: 3scale/
     repoURL: https://github.com/rpscodes/3scale-gitops.git
-    targetRevision: HEAD
+    targetRevision: prod
   syncPolicy:
     syncOptions:
     - ApplyOutOfSyncOnly=true
