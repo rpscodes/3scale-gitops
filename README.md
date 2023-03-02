@@ -4,8 +4,10 @@ The following tutorial provide steps on leveraging GitOps to configure 3scale us
 3scale CRs (Product, Backend CRs etc.)
 
 ## Prerequisites
-- 3scale operator being installed (from operatorhub) either should be cluster wide operator(introduced in 3scale 2.12) or if it is namespace specific then the operator should be installed in the namespace where the 3scale CRs are to be applied using GitOps
-- Install 3scale using APIManager CR (CR is not included). Please follow [Provision OpenShift Data Foundation](https://github.com/3scale-demos/ossm-3scale-wasm#provision-openshift-data-foundation) and [Provision 3scale](https://github.com/3scale-demos/ossm-3scale-wasm#provision-3scale) to install 3scale
+- OpenShift 4.10 and above
+- Install 3scale operator from OperatorHub in all namespaces. We do this to set up the different tenants in different namespaces instead of them being in the same namespace as the master installation. 
+![](images/3scale-operator.png)
+- Follow the 3scale installation section in this guide to install 3scale using APIManager CR (https://rpscodes.github.io/OpenShift-Service-Mesh-and-3scale-API-Management-Integration/rhs-openshift-starter-guides/4/02-3scale-installation.html?&CLUSTER_WILDCARD_URL=)
 
 ## Install RH OpenShift GitOps
 Install Red Hat OpenShift GitOps operator from the OperatorHub in the OCP webconsole
@@ -19,59 +21,88 @@ This will automatically create
 - `AppProject` CR with the name `default` in openshift-gitops namespace.
 
 ## Login to OpenShift GitOps
-Go to the login page using the route URL it creates as `openshift-gitops-server` in `openshift-gitops` namespace.
+Navigate to the `openshift-gitops` namespace and click on the route URL of  `openshift-gitops-server`
+![](images/gitops-server-url.png)
 
-You can login to `OpenShift GitOps` using the `admin` user that comes with ArgoCD deployment OR using
-OpenShift as oauth provider by clicking the button `LOG IN VIA OPENSHIFT`.
+You can login to `OpenShift GitOps` using the `admin` user that comes with ArgoCD deployment
+ ![](images/gitops-login.png)
 
 Find the password for the admin in `openshift-gitops-cluster` secret in `openshift-gitops` namespace.
+![](images/gitops-secret.png)
 
 ## Create password secret for tenant creation
-
+Create a secret which has the password that'll be used to login to the tenants. 3scale operator will use this secret to set up the login credentials of the tenants.
 ```
 oc project 3scale
 ```
 ```
 oc apply -f 3scale/tenants/tenant-password-secret.yaml
 ```
-```
-oc apply -f 3scale/tenants/tenant-password-secret.yaml
-```
 
-## Create Tenants in different namespace
 
+## Create Tenants in different projects
+We will be creating 3 different tenants (development, testing and production) in 3 different projects.
 ### Development Tenant
-
+Create the development project on your OCP cluster
 ```
 oc apply -f 3scale/namespaces/development-namespace.yaml
 ```
+Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
+```
+sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-development.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-development.yaml
+```
+Example
+```
+sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-development.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-development.yaml
+```
+Create the tenant
 ```
 oc apply -f 3scale/tenants/tenant-development.yaml
 ```
 ### Testing Tenant
+Create the testing project on your OCP cluster
 ```
 oc apply -f 3scale/namespaces/testing-namespace.yaml
 ```
+Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
+```
+sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-testing.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-testing.yaml
+```
+Example
+```
+sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-testing.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-testing.yaml
+```
+Create the tenant
 ```
 oc apply -f 3scale/tenants/tenant-testing.yaml
 ```
 
 ### Production Tenant
+Create the production project on your OCP cluster
 ```
 oc apply -f 3scale/namespaces/production-namespace.yaml
 ```
+Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
+```
+sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-production.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-production.yaml
+```
+Example
+```
+sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-production.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-production.yaml
+```
+Create the tenant
 ```
 oc apply -f 3scale/tenants/tenant-production.yaml
 ```
 
 
 ## Enabling RBAC
-Create cluster role to create, update, delete 3scale CRs (Need to have OCP admin access for this)
+Create cluster role to create, update, delete 3scale CRs (Should have OCP admin access for this)
 
 ```
 oc apply -f rbac/ClusterRole_gitops-threescale-access.yaml
 ```
-Assign the cluster role to sa `openshift-gitops-argocd-application-controller`
+Assign the cluster role to sa `openshift-gitops-argocd-application-controller` in all the projects where the tenants are installed for the gitops application to apply configurations to the different tenants in different projects
 
 ```
 oc adm policy add-role-to-user gitops-threescale-access system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n threescale-development
@@ -108,22 +139,45 @@ oc apply -f gitops/Application_threescale-prod.yaml -n openshift-gitops
 Three ArgoCD application `threescale-dev` , `threescale-test` and `threescale-prod`are created.
 
 ## 3scale CRs
-**Please note that the directory structure used for 3scale CRs are for the tutorial purpose only. Please adjust based on the needs**
-
 3scale CRs required for this tutorial are 3scale/backend-echo-api.yaml and 3scale/product-echo-api.yaml
 
-## Manual Synch of 3scale CRs
+## GitOps in action
+Login to the 3scale admin portal of the development tenant with user name `admin`password `openshift`. 
+![](images/dev-admin-url.png)
 
-The three GitOps applications configured to synch manually. But, it can be changed to synch automatically i.e. changes committed to git repo are automatically applied to 3scale else go to the GitOps console using the route URL it creates as `openshift-gitops-server` in `openshift-gitops` namespace.
+You should only have the default `API`under the products menu. In subsequent steps Argo CD will pick up the configurations from the GitHub repository and apply it to your development environment.
+![](images/default-api.png)
 
-Click `Manage Application` icon on the left panel of the ArgoCD console. You will then see `threescale-dev` application as shown below
-![](images/gitops-application.png)
+
+The GitOps application is configured to synch manually. But, it can be changed to synch automatically i.e. changes committed to git repo are automatically applied to 3scale. 
+Go to the GitOps console using the route URL it creates as `openshift-gitops-server` in `openshift-gitops` namespace.
+
+Navigate to the `openshift-gitops` namespace and click on the route URL of  `openshift-gitops-server`
+![](images/gitops-server-url.png)
+
+You can login to `OpenShift GitOps` using the `admin` user that comes with ArgoCD deployment
+ ![](images/gitops-login.png)
+
+Find the password for the admin in `openshift-gitops-cluster` secret in `openshift-gitops` namespace.
+![](images/gitops-secret.png)
+
+
+Click `Manage Application` icon on the left panel of the ArgoCD console. You will then see 3 applications for the three tenants. Let's first work with development tenant which is managed byt the `threescale-dev` application as shown below
+![](images/gitops-apps.png)
 
 Click `SYNC` and `SYNCHRONIZE` as shown below to synch the 3scale CRs 
-![](images/gitops-synch.png)
+![](images/gitops-sync.png)
 
 Once synched then the application should look as below
-![](images/gitops-synched.png)
+![](images/gitops-synced.png)
 
-Go to 3scale Admin console and observe that the product `customer` and backend `customer-order` are configured as shows below
-![](images/3scale-synch.png)
+Go to 3scale Admin console of the development tenant and observe that the product `Operated Product Echo API` and backend `Operated Backend Echo API` are configured as shown below (refresh the browser if you can't see it automatically)
+![](images/3scale-dev-created.png)
+
+Repeat the `SYNC` and `SYNCHRONIZE` steps for the `threescale-test` and `threescale-prod` applications and the see the changes reflected in the respective tenants. 
+
+### Testing the Set Up
+Now lets try making the changes to the product CR for example let's try to change the name or the rate limits of the product we created in the development environment.
+
+First make sure you've checked out the development branch of the repository
+
