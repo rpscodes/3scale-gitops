@@ -176,8 +176,72 @@ Go to 3scale Admin console of the development tenant and observe that the produc
 
 Repeat the `SYNC` and `SYNCHRONIZE` steps for the `threescale-test` and `threescale-prod` applications and the see the changes reflected in the respective tenants. 
 
-### Testing the Set Up
+### ### GitOps in Action Part 1 - Pushing Changes to the Dev Environment
 Now lets try making the changes to the product CR for example let's try to change the name or the rate limits of the product we created in the development environment.
 
 First make sure you've checked out the development branch of the repository
+```
+git checkout dev
+```
+Modify the Product name and Rate limits in the product CR using a text editor or vim and save the changes.
+
+- Before
+![](images/product-before.png)
+
+- After
+![](images/product-after.png)
+
+Commit and Push the changes to the dev branch
+```
+git checkout dev
+```
+```
+git add .
+```
+```
+git commit -m "Change Rate Limits"
+``` 
+
+```
+git push origin dev
+```
+Navigate to the Gitops console and refresh the `threescale-dev` app. 
+![](images/gitops-apps-refresh.png)
+
+The `threescale-dev` app should be out of sync after the refresh.
+![](images/dev-out-of-sync.png)
+
+`SYNC` and `SYNCHRONIZE` the app. 
+![](images/gitops-sync.png)
+
+The Product Name and Rate Limit Changes should now be reflected  in development tenant
+![](images/3scale-product-modified.png)
+
+![](images/3scale-rate-limit-modified.png)
+
+### GitOps in Action Part 2 - Pushing Changes To The Test Environment
+Subsequently after development is done we can push the changes from dev to test
+```
+git checkout test
+git merge dev -m "Change Product Info"
+git push origin test
+```
+
+The `threescale-test` app should be out of sync after the `Refresh`.
+![](images/test-out-of-sync.png)
+
+`SYNC` and `SYNCHRONIZE` the app. The Product Name and Rate Limit Changes should now be reflected  in testing tenant
+
+### GitOps in Action Part 3 - Pushing Changes To The Prod Environment
+Finally after your testing is done you can push the changes from test to prod
+```
+git checkout prod
+git merge test -m "Change Product Info"
+git push origin prod
+```
+
+The `threescale-prod` app should be out of sync after the `Refresh`.
+![](images/prod-out-of-sync.png)
+
+`SYNC` and `SYNCHRONIZE` the app. The Product Name and Rate Limit Changes should now be reflected  in production tenant
 
