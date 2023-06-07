@@ -9,6 +9,8 @@ The following tutorial provide steps on leveraging GitOps to configure 3scale us
 ![](images/3scale-operator.png)
 - Follow the 3scale installation section in this guide to install 3scale using APIManager CR (https://rpscodes.github.io/OpenShift-Service-Mesh-and-3scale-API-Management-Integration/rhs-openshift-starter-guides/4/02-3scale-installation.html?&CLUSTER_WILDCARD_URL=)
 
+- Fork this repository (Make sure you fork all the branches and not just the main branch)
+
 ## Install RH OpenShift GitOps
 Install Red Hat OpenShift GitOps operator from the OperatorHub in the OCP webconsole
 
@@ -223,7 +225,7 @@ The Product Name and Rate Limit Changes should now be reflected  in development 
 Subsequently after development is done we can push the changes from dev to test
 ```
 git checkout test
-git merge dev -m "Change Product Info"
+git merge dev -m "Change Rate Limits"
 git push origin test
 ```
 
@@ -236,7 +238,7 @@ The `threescale-test` app should be out of sync after the `Refresh`.
 Finally after your testing is done you can push the changes from test to prod
 ```
 git checkout prod
-git merge test -m "Change Product Info"
+git merge test -m "Change Rate Limits"
 git push origin prod
 ```
 
@@ -245,3 +247,44 @@ The `threescale-prod` app should be out of sync after the `Refresh`.
 
 `SYNC` and `SYNCHRONIZE` the app. The Product Name and Rate Limit Changes should now be reflected  in production tenant
 
+## Clean Up (Optional)
+In order to reuse the repository for future demos and for the instructions to work as expected, we need to clean up all the changes we made to the branches as a part of our above exercise. Run the below commands to revert your changes in the branches
+
+### Dev Clean up
+```
+git checkout dev
+```
+```
+git revert -m 1 HEAD
+```
+Add an appropriate message for reverting the commit
+
+```
+git push origin dev
+```
+
+### Test Clean up
+```
+git checkout test
+```
+```
+git revert -m 1 HEAD
+```
+Add an appropriate message for reverting the commit
+
+```
+git push origin test
+```
+
+### Prod Clean up
+```
+git checkout prod
+```
+```
+git revert -m 1 HEAD
+```
+Add an appropriate message for reverting the commit
+
+```
+git push origin prod
+```
