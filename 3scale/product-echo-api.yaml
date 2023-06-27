@@ -15,7 +15,7 @@ spec:
       name: Unlimited
   providerAccountRef:
     name: tenant-secret
-  name: Operated Product Echo API
+  name: Operator Product Echo API
   systemName: echo_api_product
   description: Echo API Product
   backendUsages:
