@@ -9,13 +9,13 @@ spec:
         - metricMethodRef:
             systemName: hits
           period: day
-          value: 50
+          value: 30
       name: Basic
     plan_unlimited:
       name: Unlimited
   providerAccountRef:
     name: tenant-secret
-  name: Operated Product Echo API Modified
+  name: Operator Product Echo API
   systemName: echo_api_product
   description: Echo API Product
   backendUsages:
