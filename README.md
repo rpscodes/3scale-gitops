@@ -7,7 +7,7 @@ The following tutorial provide steps on leveraging GitOps to configure 3scale us
 - OpenShift 4.10 and above
 - Install 3scale operator from OperatorHub in all namespaces. We do this to set up the different tenants in different namespaces instead of them being in the same namespace as the master installation. 
 ![](images/3scale-operator.png)
-- Follow the 3scale installation section in this guide to install 3scale using APIManager CR (https://rpscodes.github.io/OpenShift-Service-Mesh-and-3scale-API-Management-Integration/rhs-openshift-starter-guides/4/02-3scale-installation.html?&CLUSTER_WILDCARD_URL=)
+- Follow the instructions [here](https://github.com/rpscodes/3scale-install-playbooks/blob/master/README.md) for installing 3scale on your OpenShift cluster
 
 - Fork this repository (Make sure you fork all the branches and not just the main branch)
 
