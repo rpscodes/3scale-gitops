@@ -127,8 +127,20 @@ Click `Manage your repositories, projects, settings` icon on the left panel of t
 
 ## Create ArgoCD Application
  
-Create the ArgoCD Application for all the three environments/tenants. 
 
+Edit the Argo application CRs to replace the placeholder github url with that of your forked repo
+```
+yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-dev.yaml
+```
+```
+yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-test.yaml
+```
+```
+yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-prod.yaml
+```
+
+
+Create the ArgoCD Application for all the three environments/tenants. 
 ```
 oc apply -f gitops/Application_threescale-dev.yaml -n openshift-gitops
 ```

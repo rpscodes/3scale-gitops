@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     path: 3scale/
-    repoURL: https://github.com/rpscodes/3scale-gitops.git
+    repoURL: <your-own-repo-url>
     targetRevision: dev
   syncPolicy:
     syncOptions:
-    - ApplyOutOfSyncOnly=true
+      - ApplyOutOfSyncOnly=true
