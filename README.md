@@ -129,11 +129,6 @@ Edit the Argo application CRs to replace the placeholder github url with that of
 ```
 yq -i '.spec.source.repoURL = "<your-forked-repo-url>"' gitops/Application_threescale-dev.yaml
 ```
-For Example
-```
-yq -i '.spec.source.repoURL = "https://github.com/democent/3scale-gitops.git"' gitops/Application_threescale-dev.yaml
-```
-
 ```
 yq -i '.spec.source.repoURL = "<your-forked-repo-url>"' gitops/Application_threescale-test.yaml
 ```
