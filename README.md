@@ -11,6 +11,9 @@ The following tutorial provide steps on leveraging GitOps to configure 3scale us
 
 - Fork this repository (Make sure you fork all the branches and not just the main branch)
 
+- Install yq edit the yaml files using CLI: https://mikefarah.gitbook.io/yq/v/v3.x 
+
+
 ## Install RH OpenShift GitOps
 Install Red Hat OpenShift GitOps operator from the OperatorHub in the OCP webconsole
 
@@ -51,11 +54,11 @@ oc apply -f 3scale/namespaces/development-namespace.yaml
 ```
 Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
 ```
-sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-development.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-development.yaml
+yq -i '.spec.systemMasterUrl = "https://master.<Replace with your cluster domain URL>"' 3scale/tenants/tenant-development.yaml
 ```
-Example
+For Example
 ```
-sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-development.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-development.yaml
+yq -i '.spec.systemMasterUrl = "https://master.apps.cluster-jscsc.dynamic.redhatworkshops.io"' 3scale/tenants/tenant-development.yaml
 ```
 Create the tenant
 ```
@@ -68,12 +71,9 @@ oc apply -f 3scale/namespaces/testing-namespace.yaml
 ```
 Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
 ```
-sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-testing.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-testing.yaml
+yq -i '.spec.systemMasterUrl = "https://master.<Replace with your cluster domain URL>"' 3scale/tenants/tenant-testing.yaml
 ```
-Example
-```
-sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-testing.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-testing.yaml
-```
+
 Create the tenant
 ```
 oc apply -f 3scale/tenants/tenant-testing.yaml
@@ -86,12 +86,9 @@ oc apply -f 3scale/namespaces/production-namespace.yaml
 ```
 Edit the tenant CR to replace the placeholder openshift domain url with that of your cluster
 ```
-sed 's/apps.*com/<Replace with your cluster domain URl>/g' 3scale/tenants/tenant-production.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-production.yaml
+yq -i '.spec.systemMasterUrl = "https://master.<Replace with your cluster domain URL>"' 3scale/tenants/tenant-production.yaml
 ```
-Example
-```
-sed 's/apps.*com/apps.cluster-xp47l.xp47l.sandbox1456.opentlc.com/g' 3scale/tenants/tenant-production.yaml > temp.yml && mv temp.yml 3scale/tenants/tenant-production.yaml
-```
+
 Create the tenant
 ```
 oc apply -f 3scale/tenants/tenant-production.yaml
@@ -130,13 +127,18 @@ Click `Manage your repositories, projects, settings` icon on the left panel of t
 
 Edit the Argo application CRs to replace the placeholder github url with that of your forked repo
 ```
-yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-dev.yaml
+yq -i '.spec.source.repoURL = "<your-forked-repo-url>"' gitops/Application_threescale-dev.yaml
+```
+For Example
+```
+yq -i '.spec.source.repoURL = "https://github.com/democent/3scale-gitops.git"' gitops/Application_threescale-dev.yaml
+```
+
+```
+yq -i '.spec.source.repoURL = "<your-forked-repo-url>"' gitops/Application_threescale-test.yaml
 ```
 ```
-yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-test.yaml
-```
-```
-yq -i '.spec.source.repoURL = "<your-own-repo-url>"' gitops/Application_threescale-prod.yaml
+yq -i '.spec.source.repoURL = "<your-forked-repo-url>"' gitops/Application_threescale-prod.yaml
 ```
 
 
