@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: 3scale/
-    repoURL: <your-own-repo-url>
+    repoURL: https://github.com/rpscodes/3scale-gitops
     targetRevision: test
   syncPolicy:
     syncOptions:
