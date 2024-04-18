@@ -1,7 +1,7 @@
 apiVersion: capabilities.3scale.net/v1beta1
 kind: Product
 metadata:
-  name: petstore-sample-3
+  name: petstore-sample-4
 spec:
   applicationPlans:
     plan_basic:
@@ -15,6 +15,5 @@ spec:
       name: Unlimited
   providerAccountRef:
     name: tenant-secret
-  name: Swagger Petstore 3.0
-  systemName: Swagger_Petstore_3_0
+  systemName: Swagger_Petstore_4_0
   description: Swagger Petstore
