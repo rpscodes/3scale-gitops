@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
-  version: 6.0.0
-  title: Swagger Petstore 5.0
+  version: 1.0.0
+  title: Swagger Petstore 1.0
   license:
     name: MIT
 servers:
