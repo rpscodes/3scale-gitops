@@ -16,4 +16,5 @@ spec:
   providerAccountRef:
     name: tenant-secret
   systemName: Swagger_Petstore_5_0
+  name: Swagger Petstore 5.0
   description: Swagger Petstore
