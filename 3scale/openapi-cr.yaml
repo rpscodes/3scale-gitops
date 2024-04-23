@@ -7,4 +7,3 @@ spec:
     url: "https://raw.githubusercontent.com/rpscodes/3scale-gitops/dev/3scale/pet-store_v5.yaml"
   providerAccountRef:
     name: tenant-secret
-  productSystemName: Swagger_Petstore_5_0
