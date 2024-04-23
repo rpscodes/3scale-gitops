@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
-  version: 5.0.0
+  version: 6.0.0
   title: Swagger Petstore 5.0
   license:
     name: MIT
 servers:
-  - url: http://petstore.swagger.io/v1
+  - url: http://petstore.swaggers.io/v1
 paths:
   /pets:
     get:
