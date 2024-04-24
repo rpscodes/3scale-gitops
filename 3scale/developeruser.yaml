@@ -3,8 +3,9 @@ kind: DeveloperUser
 metadata:
   name: developeruser
 spec:
-  username: myusername
-  email: myusername@example.com
+  &user_email
+  username: devuser
+  email: devuser@example.com
   passwordCredentialsRef:
     name: myusername01
   role: admin
