@@ -149,6 +149,19 @@ oc apply -f gitops/Application_threescale-prod.yaml -n openshift-gitops
 ```
 Three ArgoCD application `threescale-dev` , `threescale-test` and `threescale-prod`are created.
 
+## Create Development User Secret
+This secret will be used later to create the admin credentials developer account later
+```
+oc create -f 3scale/dev-user-secret.yaml -n threescale-development
+```
+```
+oc create -f 3scale/dev-user-secret.yaml -n threescale-testing
+```
+```
+oc create -f 3scale/dev-user-secret.yaml -n threescale-production
+```
+
+
 ## 3scale CRs
 3scale CRs required for this tutorial are 3scale/backend-echo-api.yaml and 3scale/product-echo-api.yaml
 
