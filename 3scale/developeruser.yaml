@@ -3,12 +3,6 @@ kind: DeveloperUser
 metadata:
   name: developeruser
 spec:
-  username: myusername
-  email: myusername@example.com
-  passwordCredentialsRef:
-    name: myusername01
-  role: admin
-  developerAccountRef:
-    name: developeraccount
-  providerAccountRef:
-    name: tenant-secret
+  <<: *user_email
+  username: testuser
+  email: testuser@example.com
