@@ -1,0 +1,14 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: DeveloperUser
+metadata:
+  name: developeruser3
+spec:
+  username: myusername3
+  email: myusername3@example.com
+  passwordCredentialsRef:
+    name: myusername01
+  role: admin
+  developerAccountRef:
+    name: developeraccount3
+  providerAccountRef:
+    name: tenant-secret
