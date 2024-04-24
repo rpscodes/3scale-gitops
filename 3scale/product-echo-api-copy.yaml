@@ -1,0 +1,36 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: echo-api-product-sample2
+spec:
+  applicationPlans:
+    plan_basic2:
+      limits:
+        - metricMethodRef:
+            systemName: hits
+          period: day
+          value: 5
+      name: Basic
+    plan_unlimited2:
+      name: Unlimited
+  metrics:
+    hits:
+      description: Number of API hits
+      friendlyName: Hits
+      unit: "hit"
+  methods:
+    method01:
+      friendlyName: Method01
+  mappingRules:
+    - httpMethod: GET
+      pattern: "/"
+      increment: 1
+      metricMethodRef: hits
+  providerAccountRef:
+    name: tenant-secret
+  name: Operator Product Echo API2
+  systemName: echo_api_product2
+  description: Echo API Product2
+  backendUsages:
+    echo_api_backend:
+      path: /
