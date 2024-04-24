@@ -1,0 +1,12 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Application
+metadata:
+  name: example
+spec:
+  accountCR:
+    name: developeraccount1
+  applicationPlanName: plan_basic
+  productCR:
+    name: echo-api-product-sample
+  name: application_01
+  description: describe_your_application
