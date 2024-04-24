@@ -13,11 +13,14 @@ spec:
       name: Basic
     plan_unlimited:
       name: Unlimited
+  mappingRules:
+    - httpMethod: GET
+      pattern: "/"
   providerAccountRef:
     name: tenant-secret
   name: Operator Product Echo API 5
   systemName: echo_api_product5
   description: Echo API Product 5
   backendUsages:
-    echo_api_backend:
+    echo_api_backend5:
       path: /
