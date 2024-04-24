@@ -24,6 +24,8 @@ spec:
   mappingRules:
     - httpMethod: GET
       pattern: "/"
+      increment: 1
+      metricMethodRef: hits
   providerAccountRef:
     name: tenant-secret
   name: Operator Product Echo API 5
