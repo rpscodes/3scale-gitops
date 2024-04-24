@@ -13,6 +13,14 @@ spec:
       name: Basic
     plan_unlimited:
       name: Unlimited
+  metrics:
+    hits:
+      description: Number of API hits
+      friendlyName: Hits
+      unit: "hit"
+  methods:
+    method01:
+      friendlyName: Method01
   mappingRules:
     - httpMethod: GET
       pattern: "/"
