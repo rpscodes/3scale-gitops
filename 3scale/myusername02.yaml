@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: myusername01
-stringData:
-  password: "123456"
