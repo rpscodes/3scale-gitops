@@ -3,4 +3,4 @@ kind: ProxyConfigPromote
 metadata:
   name: proxyconfigpromote-sample
 spec:
-  productCRName: echo-api-product-sample5
+  productCRName: echo-api-product-sample
