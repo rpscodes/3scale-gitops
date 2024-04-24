@@ -1,8 +1,8 @@
 apiVersion: capabilities.3scale.net/v1beta1
 kind: DeveloperAccount
 metadata:
-  name: developeraccount3
+  name: developeraccount4
 spec:
-  orgName: Ecorp
+  orgName: Ecorp4
   providerAccountRef:
     name: tenant-secret
