@@ -5,7 +5,7 @@ metadata:
 spec:
   description: Echo API Backend
   name: Operated Backend Echo API
-  privateBaseURL: 'https://echo-api.3scale.net'
+  privateBaseURL: 'https://v2.jokeapi.dev/joke/Programming'
   providerAccountRef:
     name: tenant-secret
   systemName: echo_api_backend
