@@ -12,7 +12,7 @@ spec:
   passwordCredentialsRef:
     name: tenant-admin-secret
     namespace: 3scale
-  systemMasterUrl: 'https://master.apps.cluster-qjhkk.dynamic.redhatworkshops.io'
+  systemMasterUrl: 'https://master.apps.cluster-lf2cd.dynamic.redhatworkshops.io'
   tenantSecretRef:
     name: tenant-secret
   username: admin
